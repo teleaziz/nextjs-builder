@@ -28,6 +28,7 @@ export async function getStaticProps({
           urlPath: '/' + (page_params?.join('/') || ''),
           locale: locale
         },
+        options: { data: { locale: locale } },
         cachebust: true
       })
       .toPromise()) || null
@@ -91,7 +92,7 @@ export default function Page({
 
       <Header />
         <CodeBlock  color="blue" title="Logo" />
-        <BuilderComponent model="page" content={page} renderLink={Link} />
+        <BuilderComponent model="page" data={ {locale: locale} } content={page} renderLink={Link} />
       <Footer />
     </>
   )
