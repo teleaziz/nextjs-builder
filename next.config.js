@@ -20,6 +20,14 @@ module.exports = bundleAnalyzer({
       },
     ]
   },
+  i18n: {
+    // These are all the locales you want to support in
+    // your application
+    locales: ['en', 'fr', 'de', 'es', 'it', 'nl'],
+    // This is the default locale you want to be used when visiting
+    // a non-locale prefixed path e.g. `/hello`
+    defaultLocale: 'en',
+  },
   env: {
     // expose env to the browser
     BUILDER_PUBLIC_KEY: process.env.BUILDER_PUBLIC_KEY,

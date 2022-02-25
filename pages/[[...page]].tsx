@@ -17,25 +17,33 @@ builder.init(builderConfig.apiKey)
 
 export async function getStaticProps({
   params,
+  locale
 }: GetStaticPropsContext<{ page: string[] }>) {
   const page_params = params?.page
-  const locale = page_params?.shift()
+  const urlPath = '/' + (page_params?.join('/') || '');
+
 
   const page =
     (await builder
       .get('page', {
         userAttributes: {
-          urlPath: '/' + (page_params?.join('/') || ''),
-          locale: locale
+          locale: locale,
+          urlPath
         },
-        options: { data: { locale: locale } },
-        cachebust: true
+        includeRefs: true,
+        cachebust: true,
+        options: {
+          data: {
+            locale
+          }
+        }
       })
       .toPromise()) || null
 
   return {
     props: {
       page,
+      locale
     },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
@@ -58,6 +66,7 @@ export async function getStaticPaths() {
 
 export default function Page({
   page,
+  locale
 }: InferGetStaticPropsType<typeof getStaticProps>) {
 
   const router = useRouter()
@@ -65,7 +74,10 @@ export default function Page({
     return <h1>Loading...</h1>
   }
 
-  const locale = router.asPath.split('/')[1] || 0 // router.query.page[0] || 
+  if (Builder.isBrowser) {
+    console.log(' here page ', page, locale);
+  }
+
   builder.setUserAttributes({ locale: locale })
 
   const isLive = !Builder.isEditing && !Builder.isPreviewing
