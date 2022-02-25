@@ -5,7 +5,10 @@ import DefaultErrorPage from 'next/error'
 import Head from 'next/head'
 import builderConfig from '@config/builder'
 import '@builder.io/widgets'
-require('vm2');
+
+if (Builder.isServer) {
+  require('vm2');
+}
 import Header from '../components/Header/Header'
 import Footer from '../components/Footer/Footer'
 
